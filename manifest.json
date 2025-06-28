@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "Ragna4th Market Analyzer",
+  "version": "1.0",
+  "description": "Analisa preços de itens no Ragna4th e sugere preços competitivos",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting",
+    "notifications",
+    "contextMenus"
+  ],
+  "host_permissions": [
+    "https://db.ragna4th.com/*",
+    "https://api.ragna4th.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://db.ragna4th.com/item/*",
+        "https://db.ragna4th.com/market*"
+      ],
+      "js": ["content.js"],
+      "css": ["styles.css"]
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Ragna4th Market Analyzer"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "options_page": "options.html",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+} 

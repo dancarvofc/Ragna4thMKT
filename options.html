@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurações - Ragna4th Market Analyzer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.8;
+            font-size: 1rem;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section h2 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #fbbf24;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .option:last-child {
+            border-bottom: none;
+        }
+
+        .option-label {
+            flex: 1;
+        }
+
+        .option-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .option-description {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .toggle {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 13px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .toggle.active {
+            background: #4ade80;
+        }
+
+        .toggle::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .toggle.active::after {
+            transform: translateX(24px);
+        }
+
+        .select {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .select option {
+            background: #374151;
+            color: white;
+        }
+
+        .input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            width: 100px;
+        }
+
+        .input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #4ade80;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .message.success {
+            background: rgba(74, 222, 128, 0.2);
+            border: 1px solid rgba(74, 222, 128, 0.5);
+            color: #dcfce7;
+        }
+
+        .message.error {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.5);
+            color: #fecaca;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 20px;
+            }
+            
+            .actions {
+                flex-direction: column;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚙️ Configurações</h1>
+            <p>Personalize sua experiência com o Ragna4th Market Analyzer</p>
+        </div>
+
+        <div id="message"></div>
+
+        <div class="section">
+            <h2>🔍 Análise</h2>
+            
+            <div class="option">
+                <div class="option-label">
+                    <div class="option-title">Análise Automática</div>
+                    <div class="option-description">Analisa automaticamente quando você visita páginas do Ragna4th</div>
+                </div>
+                <div class="toggle" id="autoAnalyze"></div>
+            </div>
+
+            <div class="option">
+                <div class="option-label">
+                    <div class="option-title">Notificações</div>
+                    <div class="option-description">Mostra notificações quando análises são concluídas</div>
+                </div>
+                <div class="toggle" id="notifications"></div>
+            </div>
+
+            <div class="option">
+                <div class="option-label">
+                    <div class="option-title">Tema</div>
+                    <div class="option-description">Escolha o tema da interface</div>
+                </div>
+                <select class="select" id="theme">
+                    <option value="auto">Automático</option>
+                    <option value="light">Claro</option>
+                    <option value="dark">Escuro</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📊 Estatísticas</h2>
+            
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-value" id="itemsAnalyzed">0</div>
+                    <div class="stat-label">Itens Analisados</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="lastAnalysis">-</div>
+                    <div class="stat-label">Última Análise</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🛠️ Avançado</h2>
+            
+            <div class="option">
+                <div class="option-label">
+                    <div class="option-title">Margem de Preço</div>
+                    <div class="option-description">Quantos zenys abaixo da concorrência (padrão: 1)</div>
+                </div>
+                <input type="number" class="input" id="priceMargin" min="1" max="100" value="1">
+            </div>
+
+            <div class="option">
+                <div class="option-label">
+                    <div class="option-title">Limite de Vendedores</div>
+                    <div class="option-description">Quantos vendedores mostrar na análise (padrão: 5)</div>
+                </div>
+                <input type="number" class="input" id="sellerLimit" min="1" max="20" value="5">
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn" id="saveBtn">💾 Salvar Configurações</button>
+            <button class="btn btn-secondary" id="resetBtn">🔄 Restaurar Padrões</button>
+            <button class="btn btn-danger" id="clearBtn">🗑️ Limpar Dados</button>
+        </div>
+    </div>
+
+    <script src="options.js"></script>
+</body>
+</html> 

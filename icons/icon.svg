@@ -1,0 +1,33 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="coin" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="64" cy="64" r="60" fill="url(#bg)" stroke="#ffffff" stroke-width="4"/>
+  
+  <!-- Coin -->
+  <circle cx="64" cy="64" r="25" fill="url(#coin)" stroke="#ffffff" stroke-width="2"/>
+  
+  <!-- Coin symbol -->
+  <text x="64" y="72" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#ffffff">ƶ</text>
+  
+  <!-- Market chart lines -->
+  <path d="M 20 80 L 35 70 L 50 75 L 65 60 L 80 65 L 95 55 L 110 70" 
+        stroke="#4ade80" stroke-width="3" fill="none" stroke-linecap="round"/>
+  
+  <!-- Price tag -->
+  <rect x="85" y="25" width="25" height="15" rx="3" fill="#4ade80" stroke="#ffffff" stroke-width="1"/>
+  <text x="97.5" y="35" font-family="Arial, sans-serif" font-size="8" font-weight="bold" text-anchor="middle" fill="#ffffff">$</text>
+  
+  <!-- Small coins -->
+  <circle cx="25" cy="25" r="8" fill="url(#coin)" stroke="#ffffff" stroke-width="1"/>
+  <circle cx="105" cy="105" r="8" fill="url(#coin)" stroke="#ffffff" stroke-width="1"/>
+</svg> 

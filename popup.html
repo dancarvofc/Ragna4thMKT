@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ragna4th Market Analyzer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 350px;
+            min-height: 400px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header h1 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .status {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .status.active {
+            border-left: 4px solid #4ade80;
+        }
+
+        .status.inactive {
+            border-left: 4px solid #ef4444;
+        }
+
+        .status h3 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .status p {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        .features {
+            margin-bottom: 20px;
+        }
+
+        .features h3 {
+            font-size: 1rem;
+            margin-bottom: 10px;
+            color: #fbbf24;
+        }
+
+        .feature-list {
+            list-style: none;
+        }
+
+        .feature-list li {
+            padding: 8px 0;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .feature-list li::before {
+            content: "✓";
+            color: #4ade80;
+            font-weight: bold;
+        }
+
+        .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .footer {
+            padding: 15px 20px;
+            text-align: center;
+            font-size: 0.8rem;
+            opacity: 0.7;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.5);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            font-size: 0.9rem;
+        }
+
+        .success {
+            background: rgba(74, 222, 128, 0.2);
+            border: 1px solid rgba(74, 222, 128, 0.5);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎮 Ragna4th Market Analyzer</h1>
+        <p>Analise preços e domine o mercado!</p>
+    </div>
+
+    <div class="content">
+        <div class="status" id="status">
+            <h3>Status da Extensão</h3>
+            <p id="statusText">Verificando...</p>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Analisando página...</p>
+        </div>
+
+        <div class="features">
+            <h3>✨ Funcionalidades</h3>
+            <ul class="feature-list">
+                <li>Análise automática de preços</li>
+                <li>Sugestão de preços competitivos</li>
+                <li>Identificação de vendedores ativos</li>
+                <li>Copiar preços com um clique</li>
+                <li>Suporte a modo escuro</li>
+            </ul>
+        </div>
+
+        <div class="actions">
+            <button class="btn" id="analyzeBtn">
+                🔍 Analisar Página Atual
+            </button>
+            <button class="btn btn-secondary" id="openMarketBtn">
+                🛒 Abrir Mercado
+            </button>
+            <button class="btn btn-secondary" id="settingsBtn">
+                ⚙️ Configurações
+            </button>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Versão 1.0 - Desenvolvido para Ragna4th</p>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html> 
