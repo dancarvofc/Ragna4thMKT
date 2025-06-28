@@ -1,40 +1,59 @@
+/* 
+ * Ragna4th Market Analyzer - Script de Conteúdo
+ * 
+ * 🎮 Extensão para análise de preços no Ragna4th
+ * 👨‍💻 Criado por: Dan Marofa (@dancarvofc)
+ * 🌐 GitHub: https://github.com/dancarvofc
+ * 
+ * Este script roda nas páginas do Ragna4th e analisa os preços do mercado
+ */
+
 // Ragna4th Market Analyzer - Versão Melhorada
 (function() {
     'use strict';
 
-    // Só roda na página de mercado
+    // Só roda na página de mercado - se não for, sai fora
     if (!window.location.pathname.startsWith('/market')) return;
 
-    // Cache para dados do item
+    // Cache para dados do item - pra não ficar fazendo requisição toda hora
     let itemData = null;
     let currentItemId = null;
+    let currentSearchTerm = null;
 
-    // Utilidades
+    // Funções utilitárias para trabalhar com preços e números
+    
+    // Converte texto de preço em número (remove tudo que não é dígito)
     function parsePrice(text) {
         return parseInt((text || '').replace(/[^\d]/g, '')) || 0;
     }
     
+    // Formata preço bonitinho com vírgulas e o símbolo ƶ
     function formatPrice(price) {
         return price.toLocaleString('pt-BR') + 'ƶ';
     }
 
+    // Formata números com vírgulas
     function formatNumber(num) {
         return num.toLocaleString('pt-BR');
     }
 
-    // Busca dados do item na página específica
+    // Busca dados do item na página específica do item
     async function fetchItemData(itemId) {
+        // Se já temos os dados desse item, retorna do cache
         if (itemId === currentItemId && itemData) return itemData;
         
         try {
+            // Faz requisição para a página do item
             const response = await fetch(`https://db.ragna4th.com/item/${itemId}`);
             const html = await response.text();
             const parser = new DOMParser();
             const doc = parser.parseFromString(html, 'text/html');
             
+            // Extrai os preços dos elementos da página
             const priceElements = doc.querySelectorAll('.nk-iv-wg3-amount .number');
             const prices = Array.from(priceElements).map(el => parsePrice(el.textContent));
             
+            // Organiza os dados em um objeto bonito
             itemData = {
                 menorPrecoDisponivel: prices[0] || 0,
                 menorPrecoVenda: prices[1] || 0,
@@ -46,18 +65,18 @@
             currentItemId = itemId;
             return itemData;
         } catch (error) {
-            console.error('Erro ao buscar dados do item:', error);
+            console.error('Deu ruim ao buscar dados do item:', error);
             return null;
         }
     }
 
-    // Extrai ID do item da URL ou da tabela
+    // Extrai o ID do item da URL ou da tabela
     function getCurrentItemId() {
-        // Tenta extrair da URL primeiro
+        // Tenta extrair da URL primeiro (mais fácil)
         const urlMatch = window.location.href.match(/[?&]item=(\d+)/);
         if (urlMatch) return urlMatch[1];
         
-        // Tenta extrair da tabela
+        // Se não deu, tenta extrair da tabela
         const firstItem = document.querySelector('#market-table .market-item a[href*="/item/"]');
         if (firstItem) {
             const hrefMatch = firstItem.href.match(/\/item\/(\d+)/);
@@ -67,21 +86,23 @@
         return null;
     }
 
-    // Aguarda a tabela do mercado
+    // Aguarda a tabela do mercado carregar (às vezes demora um pouco)
     function waitForMarketTable(cb) {
         const table = document.querySelector('#market-table');
-        if (table && table.children.length > 0) return cb();
+        if (table && table.children.length > 0) return cb(); // Se já carregou, executa direto
+        
+        // Se não carregou, fica observando até carregar
         const obs = new MutationObserver(() => {
             const table = document.querySelector('#market-table');
             if (table && table.children.length > 0) {
-                obs.disconnect();
-                cb();
+                obs.disconnect(); // Para de observar
+                cb(); // Executa o callback
             }
         });
         obs.observe(document.body, { childList: true, subtree: true });
     }
 
-    // Analisa a tabela do mercado
+    // Analisa a tabela do mercado e extrai todas as informações importantes
     function analyzeMarket() {
         const rows = document.querySelectorAll('#market-table .market-item');
         const priceMap = new Map(); // preço -> quantidade total
@@ -90,25 +111,28 @@
         let totalSum = 0;
         let allPrices = [];
 
+        // Passa por cada linha da tabela
         rows.forEach(row => {
             const price = parsePrice(row.querySelector('.market-price')?.textContent);
             const qtd = parseInt(row.querySelector('.market-amount')?.textContent.replace(/[^\d]/g, '')) || 1;
             const seller = row.querySelector('.market-seller')?.textContent.trim() || 'Desconhecido';
-            if (!price) return;
+            if (!price) return; // Se não tem preço, pula
             
-            // Agrupa resistências
+            // Agrupa resistências (mesmo preço = mais quantidade)
             priceMap.set(price, (priceMap.get(price) || 0) + qtd);
+            
             // Agrupa vendedores
             if (!sellers[seller]) sellers[seller] = { qtd: 0, prices: [] };
             sellers[seller].qtd += qtd;
             sellers[seller].prices.push(price);
-            // Para média
+            
+            // Para calcular média ponderada
             totalQtd += qtd;
             totalSum += price * qtd;
             for (let i = 0; i < qtd; i++) allPrices.push(price);
         });
 
-        // Resistências: ordena por quantidade decrescente
+        // Resistências: ordena por quantidade decrescente (mais quantidade = mais resistência)
         const resistencias = Array.from(priceMap.entries())
             .sort((a, b) => b[1] - a[1])
             .map(([preco, qtd]) => ({ preco, qtd }));
@@ -116,20 +140,20 @@
         // Sugestões abaixo das resistências (máximo 5)
         const sugestoesResist = resistencias
             .slice(0, 5)
-            .map(r => r.preco > 1 ? r.preco - 1 : r.preco)
-            .filter((v, i, arr) => arr.indexOf(v) === i);
+            .map(r => r.preco > 1 ? r.preco - 1 : r.preco) // 1 zeny abaixo da resistência
+            .filter((v, i, arr) => arr.indexOf(v) === i); // Remove duplicatas
         
-        // Média ponderada
+        // Média ponderada (considera quantidade)
         const media = totalQtd ? Math.round(totalSum / totalQtd) : 0;
-        const sugestaoMedia = Math.round(media * 0.95);
+        const sugestaoMedia = Math.round(media * 0.95); // 5% abaixo da média
         
-        // Principais vendedores
+        // Principais vendedores (top 5)
         const topSellers = Object.entries(sellers)
             .sort((a, b) => b[1].qtd - a[1].qtd)
             .slice(0, 5)
             .map(([nome, data]) => ({ nome, qtd: data.qtd }));
         
-        // Faixa de preços
+        // Faixa de preços (mínimo e máximo)
         const min = allPrices.length ? Math.min(...allPrices) : 0;
         const max = allPrices.length ? Math.max(...allPrices) : 0;
 
@@ -145,288 +169,214 @@
         };
     }
 
-    // Cria interface melhorada
-    async function renderInterface(analise) {
-        // Remove anterior
-        document.querySelectorAll('.ragna4th-analysis-container').forEach(e => e.remove());
-        
-        // Busca dados do item
-        const itemId = getCurrentItemId();
-        const itemData = itemId ? await fetchItemData(itemId) : null;
-        
-        const div = document.createElement('div');
-        div.className = 'ragna4th-analysis-container';
-        
-        // CSS inline para interface moderna
-        const styles = `
-            <style>
-                .ragna4th-analysis {
-                    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-                    border: 1px solid #e7a436;
-                    border-radius: 12px;
-                    margin-bottom: 24px;
-                    padding: 24px;
-                    color: #fff;
-                    max-width: 1200px;
-                    box-shadow: 0 8px 32px rgba(231, 164, 54, 0.1);
-                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                }
-                .ragna4th-analysis h3 {
-                    margin: 0 0 20px 0;
-                    color: #e7a436;
-                    font-size: 1.5em;
-                    text-align: center;
-                    border-bottom: 2px solid #e7a436;
-                    padding-bottom: 10px;
-                }
-                .analysis-grid {
-                    display: grid;
-                    grid-template-columns: repeat(3, 1fr);
-                    gap: 20px;
-                    margin-bottom: 20px;
-                }
-                .analysis-card {
-                    background: rgba(255, 255, 255, 0.05);
-                    border-radius: 8px;
-                    padding: 16px;
-                    border: 1px solid rgba(231, 164, 54, 0.2);
-                }
-                .analysis-card h4 {
-                    margin: 0 0 12px 0;
-                    color: #e7a436;
-                    font-size: 1.1em;
-                }
-                .price-suggestion {
-                    font-size: 1.4em;
-                    font-weight: bold;
-                    color: #4ade80;
-                    margin: 8px 0;
-                }
-                .price-list {
-                    list-style: none;
-                    padding: 0;
-                    margin: 0;
-                }
-                .price-list li {
-                    background: rgba(231, 164, 54, 0.1);
-                    margin: 4px 0;
-                    padding: 8px 12px;
-                    border-radius: 6px;
-                    border-left: 3px solid #e7a436;
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                }
-                .price-item {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    width: 100%;
-                }
-                .price-info {
-                    display: flex;
-                    flex-direction: column;
-                }
-                .price-label {
-                    font-size: 0.9em;
-                    color: #ccc;
-                }
-                .price-value {
-                    font-size: 1.1em;
-                    font-weight: bold;
-                    color: #4ade80;
-                }
-                .btn-copy-inline {
-                    padding: 4px 8px;
-                    border: none;
-                    border-radius: 4px;
-                    background: linear-gradient(135deg, #e7a436 0%, #f39c12 100%);
-                    color: #222;
-                    font-weight: bold;
-                    cursor: pointer;
-                    transition: all 0.3s ease;
-                    font-size: 0.8em;
-                    margin-left: 8px;
-                }
-                .btn-copy-inline:hover {
-                    transform: translateY(-1px);
-                    box-shadow: 0 2px 8px rgba(231, 164, 54, 0.3);
-                }
-                .btn-copy-inline.success {
-                    background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
-                }
-                .seller-list {
-                    list-style: none;
-                    padding: 0;
-                    margin: 0;
-                }
-                .seller-list li {
-                    padding: 6px 0;
-                    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-                    display: flex;
-                    justify-content: space-between;
-                }
-                .stats-grid {
-                    display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-                    gap: 12px;
-                    margin: 16px 0;
-                    padding: 16px;
-                    background: rgba(255, 255, 255, 0.03);
-                    border-radius: 8px;
-                }
-                .stat-item {
-                    text-align: center;
-                }
-                .stat-value {
-                    font-size: 1.2em;
-                    font-weight: bold;
-                    color: #e7a436;
-                }
-                .stat-label {
-                    font-size: 0.9em;
-                    color: #ccc;
-                }
-                .small-text {
-                    font-size: 0.85em;
-                    color: #aaa;
-                    margin-top: 8px;
-                }
-                @media (max-width: 768px) {
-                    .analysis-grid {
-                        grid-template-columns: 1fr;
-                    }
-                }
-            </style>
-        `;
-        
-        div.innerHTML = styles + `
-            <div class="ragna4th-analysis">
-                <h3>📊 Análise Inteligente do Mercado</h3>
-                
-                <div class="analysis-grid">
-                    <div class="analysis-card">
-                        <h4>💸 Sugestões por Resistência</h4>
-                        <ul class="price-list">
-                            ${analise.sugestoesResist.map((price, index) => `
-                                <li>
-                                    <div class="price-item">
-                                        <div class="price-info">
-                                            <div class="price-label">${index + 1}º Preço Sugerido</div>
-                                            <div class="price-value">${formatPrice(price)}</div>
-                                        </div>
-                                        <button class="btn-copy-inline" data-price="${price}" data-type="resistencia" data-index="${index + 1}">
-                                            📋
-                                        </button>
-                                    </div>
-                                </li>
-                            `).join('')}
-                        </ul>
-                        <div class="small-text">Baseado nas maiores quantidades postadas</div>
-                    </div>
-                    
-                    <div class="analysis-card">
-                        <h4>📈 Preço pela Média Ponderada</h4>
-                        <div class="price-suggestion">${formatPrice(analise.sugestaoMedia)}</div>
-                        <div class="small-text">5% abaixo da média ponderada</div>
-                        <div class="small-text">Média atual: ${formatPrice(analise.media)}</div>
-                    </div>
-                    
-                    <div class="analysis-card">
-                        <h4>🏪 Principais Vendedores</h4>
-                        <ul class="seller-list">
-                            ${analise.topSellers.map(seller => `
-                                <li>
-                                    <span>${seller.nome}</span>
-                                    <span style="color: #e7a436;">${seller.qtd} itens</span>
-                                </li>
-                            `).join('')}
-                        </ul>
-                    </div>
-                </div>
-                
-                ${itemData ? `
-                <div class="analysis-card">
-                    <h4>📊 Dados Históricos do Item</h4>
-                    <div class="stats-grid">
-                        <div class="stat-item">
-                            <div class="stat-value">${formatPrice(itemData.menorPrecoDisponivel)}</div>
-                            <div class="stat-label">Menor Preço Disponível</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value">${formatPrice(itemData.menorPrecoVenda)}</div>
-                            <div class="stat-label">Menor Venda (30d)</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value">${formatPrice(itemData.maiorPrecoVenda)}</div>
-                            <div class="stat-label">Maior Venda (30d)</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value">${formatNumber(itemData.numeroVendas)}</div>
-                            <div class="stat-label">Vendas (30d)</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value">${formatNumber(itemData.totalVendido)}</div>
-                            <div class="stat-label">Total Vendido (30d)</div>
-                        </div>
-                    </div>
-                </div>
-                ` : ''}
-                
-                <div class="stats-grid">
-                    <div class="stat-item">
-                        <div class="stat-value">${analise.totalQtd}</div>
-                        <div class="stat-label">Total de Itens</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">${formatPrice(analise.min)} - ${formatPrice(analise.max)}</div>
-                        <div class="stat-label">Faixa de Preços</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">${formatPrice(analise.media)}</div>
-                        <div class="stat-label">Preço Médio</div>
-                    </div>
-                </div>
-            </div>
-        `;
-        
-        // Insere antes da tabela
-        const contentBody = document.querySelector('.nk-content-body');
-        if (contentBody) contentBody.insertBefore(div, contentBody.firstChild);
-        
-        // Eventos para todos os botões de copiar inline
-        div.querySelectorAll('.btn-copy-inline').forEach(btn => {
-            btn.onclick = function() {
-                const price = this.getAttribute('data-price');
-                const type = this.getAttribute('data-type');
-                const index = this.getAttribute('data-index');
-                
-                navigator.clipboard.writeText(price).then(() => {
-                    // Feedback visual
-                    this.classList.add('success');
-                    this.textContent = '✅';
-                    
-                    setTimeout(() => {
-                        this.classList.remove('success');
-                        this.textContent = '📋';
-                    }, 2000);
-                });
-            };
+    // Pega o tema atual das configurações
+    function getCurrentTheme() {
+        return new Promise((resolve) => {
+            chrome.storage.local.get(['settings'], (result) => {
+                const theme = result.settings?.theme || 'auto';
+                resolve(theme);
+            });
         });
     }
 
-    // Atualiza sempre que a tabela mudar
-    function main() {
-        const analise = analyzeMarket();
-        renderInterface(analise);
+    // Aplica o tema correto baseado na configuração
+    function applyTheme(theme) {
+        const isDarkMode = document.body.classList.contains('dark-mode');
+        
+        let finalTheme = theme;
+        if (theme === 'auto') {
+            finalTheme = isDarkMode ? 'dark' : 'light';
+        }
+
+        return finalTheme;
     }
 
-    waitForMarketTable(() => {
+    // Cria a interface bonita na página
+    async function renderInterface(analise) {
+        // Remove interface anterior se existir
+        document.querySelectorAll('.ragna4th-analysis-container').forEach(e => e.remove());
+        
+        // Busca dados do item (se conseguir)
+        const itemId = getCurrentItemId();
+        const itemData = itemId ? await fetchItemData(itemId) : null;
+        
+        // Pega o tema atual
+        const theme = await getCurrentTheme();
+        const appliedTheme = applyTheme(theme);
+        
+        const div = document.createElement('div');
+        div.className = `ragna4th-analysis-container theme-${appliedTheme}`;
+
+        // Pega o nome do item atual (se estiver pesquisando)
+        const searchTitle = document.querySelector('.searching-for h5');
+        const currentItemName = searchTitle ? searchTitle.textContent : 'Mercado Geral';
+
+        // HTML da interface com classe de tema
+        div.innerHTML = `
+            <div class="ragna4th-analysis theme-${appliedTheme}">
+                <h3>🎮 Análise de Mercado - ${currentItemName}</h3>
+                
+                <div class="analysis-grid">
+                    <!-- Card de sugestões baseadas em resistências -->
+                    <div class="analysis-card">
+                        <h4>💡 Sugestões por Resistência</h4>
+                        ${analise.sugestoesResist.length > 0 ? 
+                            analise.sugestoesResist.map(preco => `
+                                <div class="price-item">
+                                    <div class="price-suggestion">${formatPrice(preco)}</div>
+                                    <button class="btn-copy-individual" onclick="copyToClipboard('${preco}')">
+                                        📋 Copiar
+                                    </button>
+                                </div>
+                            `).join('') : 
+                            '<p>Nenhuma sugestão disponível</p>'
+                        }
+                    </div>
+
+                    <!-- Card de sugestão por média -->
+                    <div class="analysis-card">
+                        <h4>📊 Sugestão por Média</h4>
+                        <div class="price-suggestion">${formatPrice(analise.sugestaoMedia)}</div>
+                        <p><small>Média ponderada: ${formatPrice(analise.media)}</small></p>
+                        <div class="analysis-actions">
+                            <button class="btn-copy-price" onclick="copyToClipboard('${analise.sugestaoMedia}')">
+                                📋 Copiar Preço
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Card de faixa de preços -->
+                    <div class="analysis-card">
+                        <h4>📈 Faixa de Preços</h4>
+                        <p><strong>Mínimo:</strong> ${formatPrice(analise.min)}</p>
+                        <p><strong>Máximo:</strong> ${formatPrice(analise.max)}</p>
+                        <p><strong>Total:</strong> ${formatNumber(analise.totalQtd)} itens</p>
+                        <div class="analysis-actions">
+                            <a href="https://db.ragna4th.com/market" class="btn-view-market" target="_blank">
+                                🛒 Ver Mercado
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Informações adicionais do item -->
+                ${itemData ? `
+                <div class="analysis-grid">
+                    <div class="analysis-card">
+                        <h4>📋 Dados do Item</h4>
+                        <p><strong>Menor disponível:</strong> ${formatPrice(itemData.menorPrecoDisponivel)}</p>
+                        <p><strong>Menor venda:</strong> ${formatPrice(itemData.menorPrecoVenda)}</p>
+                        <p><strong>Maior venda:</strong> ${formatPrice(itemData.maiorPrecoVenda)}</p>
+                    </div>
+                    <div class="analysis-card">
+                        <h4>📊 Estatísticas</h4>
+                        <p><strong>Número de vendas:</strong> ${formatNumber(itemData.numeroVendas)}</p>
+                        <p><strong>Total vendido:</strong> ${formatPrice(itemData.totalVendido)}</p>
+                    </div>
+                    <div class="analysis-card">
+                        <h4>👥 Top Vendedores</h4>
+                        ${analise.topSellers.map(seller => 
+                            `<p><strong>${seller.nome}:</strong> ${formatNumber(seller.qtd)} itens</p>`
+                        ).join('')}
+                    </div>
+                </div>
+                ` : ''}
+
+                <!-- Footer com créditos -->
+                <div class="ragna4th-footer theme-${appliedTheme}">
+                    <p>
+                        Criado por <span class="creator-badge">Dan Marofa</span>
+                        <br>
+                        <a href="https://github.com/dancarvofc" target="_blank">@dancarvofc</a>
+                    </p>
+                </div>
+            </div>
+        `;
+
+        // Insere a interface ANTES da tabela (não no final da página)
+        const marketCard = document.querySelector('#market-card');
+        if (marketCard) {
+            marketCard.parentNode.insertBefore(div, marketCard);
+        } else {
+            // Fallback: insere no body se não encontrar o card
+            document.body.appendChild(div);
+        }
+
+        // Adiciona função global para copiar preços
+        window.copyToClipboard = function(price) {
+            navigator.clipboard.writeText(price.toString()).then(() => {
+                // Mostra feedback visual
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = '✅ Copiado!';
+                btn.style.background = 'linear-gradient(135deg, #059669 0%, #047857 100%)';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+                }, 2000);
+            }).catch(err => {
+                console.error('Deu ruim ao copiar:', err);
+            });
+        };
+    }
+
+    // Observa mudanças na pesquisa para atualizar a análise
+    function observeSearchChanges() {
+        // Observa mudanças no título da pesquisa
+        const searchObserver = new MutationObserver(async (mutations) => {
+            for (const mutation of mutations) {
+                if (mutation.type === 'childList') {
+                    const searchTitle = document.querySelector('.searching-for h5');
+                    if (searchTitle && searchTitle.textContent !== currentSearchTerm) {
+                        currentSearchTerm = searchTitle.textContent;
+                        console.log('Pesquisa mudou para:', currentSearchTerm);
+                        
+                        // Aguarda um pouco para a tabela atualizar
+                        setTimeout(() => {
+                            const analise = analyzeMarket();
+                            renderInterface(analise);
+                        }, 1000);
+                    }
+                }
+            }
+        });
+
+        // Observa o elemento que contém o título da pesquisa
+        const searchContainer = document.querySelector('.card-title');
+        if (searchContainer) {
+            searchObserver.observe(searchContainer, { childList: true, subtree: true });
+        }
+
+        // Observa mudanças no tema do site
+        const themeObserver = new MutationObserver(async (mutations) => {
+            for (const mutation of mutations) {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                    const analise = analyzeMarket();
+                    renderInterface(analise);
+                }
+            }
+        });
+
+        // Observa o body para mudanças de tema
+        themeObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    }
+
+    // Função principal que coordena tudo
+    function main() {
+        // Aguarda a tabela carregar e depois analisa
+        waitForMarketTable(() => {
+            const analise = analyzeMarket();
+            renderInterface(analise);
+            observeSearchChanges(); // Observa mudanças na pesquisa
+        });
+    }
+
+    // Inicia tudo quando a página carrega
+    main();
+
+    // Torna a classe disponível globalmente (pra o popup poder usar)
+    window.Ragna4thAnalyzer = function() {
         main();
-        // Observa mudanças na tabela
-        const table = document.querySelector('#market-table');
-        const obs = new MutationObserver(() => setTimeout(main, 500));
-        obs.observe(table, { childList: true, subtree: true });
-    });
+    };
 
 })(); 

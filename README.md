@@ -2,37 +2,41 @@
 
 Uma extensão do Chrome que analisa preços de itens no Ragna4th e sugere preços competitivos para maximizar suas vendas!
 
+**👨‍💻 Criado por: Dan Marofa (@dancarvofc)**  
+**🌐 GitHub: [https://github.com/dancarvofc](https://github.com/dancarvofc)**
+
 ## ✨ Funcionalidades
 
-- **Análise Automática**: Analisa automaticamente preços de itens nas páginas do Ragna4th
-- **Preço Sugerido**: Calcula o preço ideal (1 zeny abaixo da concorrência)
-- **Identificação de Vendedores**: Mostra os principais vendedores e seus preços
-- **Copiar Preços**: Copia preços sugeridos com um clique
-- **Modo Escuro**: Suporte completo ao modo escuro do site
-- **Notificações**: Notificações quando análises são concluídas
-- **Menu de Contexto**: Clique direito em links para análise rápida
+- **🎯 Análise Automática**: Analisa automaticamente preços de itens nas páginas do Ragna4th
+- **💰 Preço Sugerido**: Calcula o preço ideal (1 zeny abaixo da concorrência)
+- **👥 Identificação de Vendedores**: Mostra os principais vendedores e seus preços
+- **📋 Copiar Preços**: Copia preços sugeridos com um clique
+- **🎨 Tema Claro Moderno**: Interface elegante com tons de cinza
+- **🔔 Notificações**: Notificações quando análises são concluídas
+- **🖱️ Menu de Contexto**: Clique direito em links para análise rápida
+- **📊 Estatísticas Detalhadas**: Histórico de vendas e dados do mercado
 
 ## 🚀 Instalação
 
 ### Método 1: Instalação Manual (Recomendado)
 
-1. **Baixe os arquivos**
+1. **📥 Baixe os arquivos**
    - Clone ou baixe este repositório
    - Extraia os arquivos em uma pasta
 
-2. **Abra o Chrome**
+2. **🌐 Abra o Chrome**
    - Digite `chrome://extensions/` na barra de endereços
    - Ou vá em Menu → Mais ferramentas → Extensões
 
-3. **Ative o Modo Desenvolvedor**
+3. **🔧 Ative o Modo Desenvolvedor**
    - Clique no botão "Modo do desenvolvedor" no canto superior direito
 
-4. **Carregue a Extensão**
+4. **📦 Carregue a Extensão**
    - Clique em "Carregar sem compactação"
    - Selecione a pasta com os arquivos da extensão
    - Clique em "Selecionar pasta"
 
-5. **Pronto!**
+5. **✅ Pronto!**
    - A extensão será instalada e aparecerá na barra de ferramentas
 
 ### Método 2: Instalação via Chrome Web Store (Futuro)
@@ -43,14 +47,14 @@ Uma extensão do Chrome que analisa preços de itens no Ragna4th e sugere preço
 
 ### Análise de Item Individual
 
-1. **Navegue para uma página de item**
+1. **🔍 Navegue para uma página de item**
    - Ex: `https://db.ragna4th.com/item/8009`
 
-2. **A extensão analisará automaticamente**
+2. **⚡ A extensão analisará automaticamente**
    - Aguarde alguns segundos para o carregamento
    - A análise aparecerá no topo da página
 
-3. **Veja os resultados**
+3. **📈 Veja os resultados**
    - Preços atuais do item
    - Preço sugerido para venda
    - Principais vendedores
@@ -58,27 +62,27 @@ Uma extensão do Chrome que analisa preços de itens no Ragna4th e sugere preço
 
 ### Análise do Mercado
 
-1. **Vá para a página do mercado**
+1. **🛒 Vá para a página do mercado**
    - `https://db.ragna4th.com/market`
 
-2. **A extensão analisará todos os itens**
+2. **📊 A extensão analisará todos os itens**
    - Mostrará preços sugeridos
    - Identificará vendedores ativos
    - Calculará estatísticas gerais
 
 ### Usando o Popup
 
-1. **Clique no ícone da extensão**
+1. **🖱️ Clique no ícone da extensão**
    - Na barra de ferramentas do Chrome
 
-2. **Use os botões**
+2. **🔘 Use os botões**
    - **Analisar Página Atual**: Força uma nova análise
    - **Abrir Mercado**: Navega para o mercado
    - **Configurações**: Abre as configurações
 
 ### Menu de Contexto
 
-1. **Clique direito em links de itens**
+1. **🖱️ Clique direito em links de itens**
    - Selecione "Analisar Item Ragna4th"
    - A extensão abrirá a página do item automaticamente
 
@@ -88,16 +92,16 @@ Uma extensão do Chrome que analisa preços de itens no Ragna4th e sugere preço
 
 A extensão calcula o preço ideal usando a seguinte lógica:
 
-1. **Identifica o menor preço atual** no mercado
-2. **Subtrai 1 zeny** para ficar abaixo da concorrência
-3. **Garante que o preço seja pelo menos 1 zeny** (mínimo)
+1. **🔍 Identifica o menor preço atual** no mercado
+2. **➖ Subtrai 1 zeny** para ficar abaixo da concorrência
+3. **✅ Garante que o preço seja pelo menos 1 zeny** (mínimo)
 
 ### Análise de Vendedores
 
-- **Conta quantos itens** cada vendedor tem
-- **Identifica o menor preço** de cada vendedor
-- **Ranking por quantidade** de itens vendidos
-- **Mostra os top 5 vendedores** mais ativos
+- **📊 Conta quantos itens** cada vendedor tem
+- **💰 Identifica o menor preço** de cada vendedor
+- **🏆 Ranking por quantidade** de itens vendidos
+- **👑 Mostra os top 5 vendedores** mais ativos
 
 ### Dados Analisados
 
@@ -111,19 +115,43 @@ A extensão calcula o preço ideal usando a seguinte lógica:
 ## ⚙️ Configurações
 
 ### Análise Automática
-- **Ativada por padrão**
+- **✅ Ativada por padrão**
 - Analisa automaticamente quando você visita páginas do Ragna4th
 - Pode ser desativada nas configurações
 
 ### Notificações
-- **Ativadas por padrão**
+- **🔔 Ativadas por padrão**
 - Mostra notificações quando análises são concluídas
 - Pode ser desativada nas configurações
 
 ### Tema
-- **Automático por padrão**
-- Segue o tema do site (claro/escuro)
-- Pode ser forçado para claro ou escuro
+- **🎨 Múltiplos temas disponíveis**:
+  - **Automático**: Segue o tema do site (claro/escuro)
+  - **Claro**: Tema claro com tons de cinza elegantes
+  - **Escuro**: Tema escuro para ambientes com pouca luz
+  - **Cinza**: Tema intermediário com tons de cinza
+- Interface elegante e profissional
+- Design responsivo para mobile
+
+### Configurações Avançadas
+- **💰 Margem de preço**: Ajuste a diferença em zeny
+- **👥 Limite de vendedores**: Quantos vendedores mostrar
+
+## 🎨 Design e Interface
+
+### Múltiplos Temas
+- **🎨 Tema Claro**: Tons de cinza elegantes e profissionais
+- **🌙 Tema Escuro**: Ideal para ambientes com pouca luz
+- **⚫ Tema Cinza**: Intermediário com tons neutros
+- **🔄 Automático**: Segue o tema do site automaticamente
+
+### Características Visuais
+- **💳 Cards modernos**: Interface em cards com sombras suaves
+- **🎯 Botões interativos**: Feedback visual ao clicar
+- **📊 Gráficos e estatísticas**: Dados apresentados de forma clara
+- **🎨 Ícones intuitivos**: Emojis e ícones para melhor UX
+- **📱 Responsivo**: Funciona perfeitamente em mobile
+- **🔍 Legibilidade**: Texto bem contrastado e legível
 
 ## 🔧 Solução de Problemas
 
@@ -150,17 +178,21 @@ A extensão calcula o preço ideal usando a seguinte lógica:
 ## 📁 Estrutura dos Arquivos
 
 ```
-4thMarket/
+Ragna4thMKT/
 ├── manifest.json          # Configuração da extensão
 ├── content.js             # Script principal (análise)
 ├── popup.html             # Interface do popup
 ├── popup.js               # Funcionalidade do popup
 ├── background.js          # Service worker
+├── options.html           # Página de configurações
+├── options.js             # Script das configurações
 ├── styles.css             # Estilos da interface
 ├── icons/                 # Ícones da extensão
 │   ├── icon16.png
 │   ├── icon48.png
 │   └── icon128.png
+├── INSTALACAO.md          # Guia de instalação
+├── EXEMPLO.md             # Exemplos de uso
 └── README.md              # Este arquivo
 ```
 
@@ -170,7 +202,7 @@ A extensão calcula o preço ideal usando a seguinte lógica:
 - **JavaScript ES6+**: Lógica principal
 - **Chrome Extensions API**: Integração com o navegador
 - **CSS3**: Estilização moderna e responsiva
-- **HTML5**: Interface do popup
+- **HTML5**: Interface do popup e configurações
 
 ### Como Contribuir
 1. Faça um fork do projeto
@@ -187,17 +219,20 @@ Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes
 
 Se você encontrar problemas ou tiver sugestões:
 
-1. **Abra uma issue** no GitHub
-2. **Descreva o problema** detalhadamente
-3. **Inclua screenshots** se possível
-4. **Mencione sua versão** do Chrome
+1. **📝 Abra uma issue** no GitHub
+2. **📋 Descreva o problema** detalhadamente
+3. **📸 Inclua screenshots** se possível
+4. **🔢 Mencione sua versão** do Chrome
 
 ## 🎉 Agradecimentos
 
-- **Ragna4th**: Pela plataforma incrível
-- **Comunidade**: Por feedback e sugestões
-- **Chrome Extensions**: Pela documentação excelente
+- **🎮 Ragna4th**: Pela plataforma incrível
+- **👥 Comunidade**: Por feedback e sugestões
+- **🌐 Chrome Extensions**: Pela documentação excelente
+- **💻 GitHub**: Por hospedar o projeto
 
 ---
 
-**Desenvolvido com ❤️ para a comunidade Ragna4th** 
+**⭐ Se este projeto te ajudou, considere dar uma estrela no GitHub!**
+
+**👨‍💻 Desenvolvido com ❤️ por Dan Marofa (@dancarvofc)** 

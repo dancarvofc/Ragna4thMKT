@@ -5,30 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Configurações - Ragna4th Market Analyzer</title>
     <style>
+        /* Reset básico - remove margens e paddings padrão */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        /* Corpo principal - tema claro com gradiente cinza suave */
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); /* Gradiente cinza claro */
+            color: #334155; /* Texto cinza escuro */
             min-height: 100vh;
             padding: 20px;
         }
 
+        /* Container principal das configurações */
         .container {
             max-width: 600px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
+            background: #ffffff; /* Fundo branco */
             border-radius: 12px;
             padding: 30px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08); /* Sombra sutil */
+            border: 1px solid #e2e8f0; /* Borda cinza claro */
         }
 
+        /* Cabeçalho da página */
         .header {
             text-align: center;
             margin-bottom: 30px;
@@ -38,33 +42,36 @@
             font-size: 2rem;
             font-weight: 600;
             margin-bottom: 10px;
+            color: #1e293b; /* Cinza muito escuro */
         }
 
         .header p {
-            opacity: 0.8;
+            color: #64748b; /* Cinza médio */
             font-size: 1rem;
         }
 
+        /* Seções de configurações */
         .section {
             margin-bottom: 30px;
             padding: 20px;
-            background: rgba(255, 255, 255, 0.05);
+            background: #f8fafc; /* Cinza muito claro */
             border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid #e2e8f0; /* Borda cinza claro */
         }
 
         .section h2 {
             font-size: 1.3rem;
             margin-bottom: 15px;
-            color: #fbbf24;
+            color: #f59e0b; /* Amarelo para destaque */
         }
 
+        /* Opções individuais */
         .option {
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 15px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid #e2e8f0; /* Linha divisória cinza claro */
         }
 
         .option:last-child {
@@ -78,25 +85,27 @@
         .option-title {
             font-weight: 600;
             margin-bottom: 5px;
+            color: #475569; /* Cinza médio */
         }
 
         .option-description {
             font-size: 0.9rem;
-            opacity: 0.8;
+            color: #94a3b8; /* Cinza claro */
         }
 
+        /* Toggle switches (botões liga/desliga) */
         .toggle {
             position: relative;
             width: 50px;
             height: 26px;
-            background: rgba(255, 255, 255, 0.2);
+            background: #cbd5e1; /* Cinza médio */
             border-radius: 13px;
             cursor: pointer;
             transition: background 0.3s ease;
         }
 
         .toggle.active {
-            background: #4ade80;
+            background: #10b981; /* Verde suave */
         }
 
         .toggle::after {
@@ -115,10 +124,11 @@
             transform: translateX(24px);
         }
 
+        /* Menus dropdown */
         .select {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
+            background: #ffffff; /* Fundo branco */
+            border: 1px solid #cbd5e1; /* Borda cinza médio */
+            color: #334155; /* Texto cinza escuro */
             padding: 8px 12px;
             border-radius: 6px;
             font-size: 0.9rem;
@@ -126,14 +136,15 @@
         }
 
         .select option {
-            background: #374151;
-            color: white;
+            background: #ffffff;
+            color: #334155;
         }
 
+        /* Campos de entrada */
         .input {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
+            background: #ffffff; /* Fundo branco */
+            border: 1px solid #cbd5e1; /* Borda cinza médio */
+            color: #334155; /* Texto cinza escuro */
             padding: 8px 12px;
             border-radius: 6px;
             font-size: 0.9rem;
@@ -141,9 +152,10 @@
         }
 
         .input::placeholder {
-            color: rgba(255, 255, 255, 0.6);
+            color: #94a3b8; /* Cinza claro */
         }
 
+        /* Estatísticas */
         .stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -152,24 +164,26 @@
         }
 
         .stat-card {
-            background: rgba(255, 255, 255, 0.05);
+            background: #ffffff; /* Fundo branco */
             padding: 15px;
             border-radius: 8px;
             text-align: center;
+            border: 1px solid #e2e8f0; /* Borda cinza claro */
         }
 
         .stat-value {
             font-size: 1.5rem;
             font-weight: 700;
-            color: #4ade80;
+            color: #059669; /* Verde suave */
             margin-bottom: 5px;
         }
 
         .stat-label {
             font-size: 0.8rem;
-            opacity: 0.8;
+            color: #64748b; /* Cinza médio */
         }
 
+        /* Botões de ação */
         .actions {
             display: flex;
             gap: 15px;
@@ -178,7 +192,7 @@
         }
 
         .btn {
-            background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%); /* Verde suave */
             color: white;
             border: none;
             padding: 12px 24px;
@@ -187,41 +201,85 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2); /* Sombra verde sutil */
         }
 
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
         }
 
         .btn-secondary {
-            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); /* Azul suave */
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2); /* Sombra azul sutil */
         }
 
         .btn-danger {
-            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); /* Vermelho */
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2); /* Sombra vermelha sutil */
         }
 
+        /* Mensagens de feedback */
         .message {
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
             text-align: center;
-            font-weight: 600;
         }
 
         .message.success {
-            background: rgba(74, 222, 128, 0.2);
-            border: 1px solid rgba(74, 222, 128, 0.5);
-            color: #dcfce7;
+            background: rgba(16, 185, 129, 0.1); /* Verde bem claro */
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #059669; /* Verde escuro */
         }
 
         .message.error {
-            background: rgba(239, 68, 68, 0.2);
-            border: 1px solid rgba(239, 68, 68, 0.5);
-            color: #fecaca;
+            background: rgba(239, 68, 68, 0.1); /* Vermelho bem claro */
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #dc2626; /* Vermelho escuro */
         }
 
+        .message.info {
+            background: rgba(59, 130, 246, 0.1); /* Azul bem claro */
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            color: #2563eb; /* Azul escuro */
+        }
+
+        /* Footer com créditos */
+        .footer {
+            margin-top: 30px;
+            padding: 20px;
+            text-align: center;
+            background: #f8fafc; /* Cinza muito claro */
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            font-size: 0.85rem;
+            color: #64748b; /* Cinza médio */
+        }
+
+        .footer a {
+            color: #3b82f6; /* Azul para links */
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .creator-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        /* Design responsivo */
         @media (max-width: 768px) {
             .container {
                 margin: 10px;
@@ -230,34 +288,39 @@
             
             .actions {
                 flex-direction: column;
+                align-items: center;
             }
             
-            .stats {
-                grid-template-columns: 1fr;
+            .btn {
+                width: 100%;
+                max-width: 300px;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Container principal -->
     <div class="container">
+        <!-- Cabeçalho -->
         <div class="header">
             <h1>⚙️ Configurações</h1>
-            <p>Personalize sua experiência com o Ragna4th Market Analyzer</p>
+            <p>Personalize o comportamento da extensão</p>
         </div>
 
-        <div id="message"></div>
-
+        <!-- Seção de configurações gerais -->
         <div class="section">
-            <h2>🔍 Análise</h2>
+            <h2>🔧 Configurações Gerais</h2>
             
+            <!-- Análise automática -->
             <div class="option">
                 <div class="option-label">
                     <div class="option-title">Análise Automática</div>
-                    <div class="option-description">Analisa automaticamente quando você visita páginas do Ragna4th</div>
+                    <div class="option-description">Analisa automaticamente quando você visita páginas do mercado</div>
                 </div>
                 <div class="toggle" id="autoAnalyze"></div>
             </div>
 
+            <!-- Notificações -->
             <div class="option">
                 <div class="option-label">
                     <div class="option-title">Notificações</div>
@@ -266,6 +329,7 @@
                 <div class="toggle" id="notifications"></div>
             </div>
 
+            <!-- Tema -->
             <div class="option">
                 <div class="option-label">
                     <div class="option-title">Tema</div>
@@ -275,10 +339,35 @@
                     <option value="auto">Automático</option>
                     <option value="light">Claro</option>
                     <option value="dark">Escuro</option>
+                    <option value="gray">Cinza</option>
                 </select>
             </div>
         </div>
 
+        <!-- Seção de configurações avançadas -->
+        <div class="section">
+            <h2>🎯 Configurações Avançadas</h2>
+            
+            <!-- Margem de preço -->
+            <div class="option">
+                <div class="option-label">
+                    <div class="option-title">Margem de Preço</div>
+                    <div class="option-description">Diferença em zeny abaixo do menor preço</div>
+                </div>
+                <input type="number" class="input" id="priceMargin" min="1" max="100" value="1">
+            </div>
+
+            <!-- Limite de vendedores -->
+            <div class="option">
+                <div class="option-label">
+                    <div class="option-title">Limite de Vendedores</div>
+                    <div class="option-description">Número máximo de vendedores mostrados</div>
+                </div>
+                <input type="number" class="input" id="sellerLimit" min="1" max="20" value="5">
+            </div>
+        </div>
+
+        <!-- Seção de estatísticas -->
         <div class="section">
             <h2>📊 Estatísticas</h2>
             
@@ -288,39 +377,30 @@
                     <div class="stat-label">Itens Analisados</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value" id="lastAnalysis">-</div>
+                    <div class="stat-value" id="lastAnalysis">Nunca</div>
                     <div class="stat-label">Última Análise</div>
                 </div>
             </div>
         </div>
 
-        <div class="section">
-            <h2>🛠️ Avançado</h2>
-            
-            <div class="option">
-                <div class="option-label">
-                    <div class="option-title">Margem de Preço</div>
-                    <div class="option-description">Quantos zenys abaixo da concorrência (padrão: 1)</div>
-                </div>
-                <input type="number" class="input" id="priceMargin" min="1" max="100" value="1">
-            </div>
-
-            <div class="option">
-                <div class="option-label">
-                    <div class="option-title">Limite de Vendedores</div>
-                    <div class="option-description">Quantos vendedores mostrar na análise (padrão: 5)</div>
-                </div>
-                <input type="number" class="input" id="sellerLimit" min="1" max="20" value="5">
-            </div>
-        </div>
-
+        <!-- Botões de ação -->
         <div class="actions">
             <button class="btn" id="saveBtn">💾 Salvar Configurações</button>
-            <button class="btn btn-secondary" id="resetBtn">🔄 Restaurar Padrões</button>
+            <button class="btn btn-secondary" id="resetBtn">🔄 Restaurar Padrão</button>
             <button class="btn btn-danger" id="clearBtn">🗑️ Limpar Dados</button>
+        </div>
+
+        <!-- Footer com créditos -->
+        <div class="footer">
+            <p>
+                Criado por <span class="creator-badge">Dan Marofa</span>
+                <br>
+                <a href="https://github.com/dancarvofc" target="_blank">@dancarvofc</a>
+            </p>
         </div>
     </div>
 
+    <!-- Script principal -->
     <script src="options.js"></script>
 </body>
 </html> 

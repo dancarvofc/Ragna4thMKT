@@ -1,4 +1,12 @@
-// Ragna4th Market Analyzer - Background Service Worker
+/* 
+ * Ragna4th Market Analyzer - Service Worker de Fundo
+ * 
+ * 🎮 Extensão para análise de preços no Ragna4th
+ * 👨‍💻 Criado por: Dan Marofa (@dancarvofc)
+ * 🌐 GitHub: https://github.com/dancarvofc
+ * 
+ * Este script roda em background e gerencia notificações, estatísticas e configurações
+ */
 
 // Instalação da extensão
 chrome.runtime.onInstalled.addListener((details) => {
@@ -64,7 +72,7 @@ function handleAnalysisComplete(data, tab) {
     chrome.storage.local.get(['settings'], (result) => {
         if (result.settings?.notifications) {
             showNotification({
-                title: 'Análise Concluída!',
+                title: 'Análise Concluída! 🎉',
                 message: `Item ${data.itemId} analisado. Preço sugerido: ${data.suggestedPrice}ƶ`,
                 icon: 'icons/icon48.png'
             });
@@ -126,7 +134,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 chrome.runtime.onInstalled.addListener(() => {
     chrome.contextMenus.create({
         id: 'analyzeItem',
-        title: 'Analisar Item Ragna4th',
+        title: 'Analisar Item Ragna4th 🔍',
         contexts: ['link'],
         documentUrlPatterns: ['*://db.ragna4th.com/*']
     });

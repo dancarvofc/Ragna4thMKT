@@ -2,7 +2,9 @@
   "manifest_version": 3,
   "name": "Ragna4th Market Analyzer",
   "version": "1.0",
-  "description": "Analisa preços de itens no Ragna4th e sugere preços competitivos",
+  "description": "Analisa preços de itens no Ragna4th e sugere preços competitivos. Criado por Dan Marofa (@dancarvofc)",
+  "author": "Dan Marofa (@dancarvofc)",
+  "homepage_url": "https://github.com/dancarvofc",
   "permissions": [
     "activeTab",
     "storage",
@@ -26,7 +28,7 @@
   ],
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Ragna4th Market Analyzer"
+    "default_title": "Ragna4th Market Analyzer - por Dan Marofa"
   },
   "background": {
     "service_worker": "background.js"
