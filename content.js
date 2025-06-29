@@ -19,6 +19,7 @@
     let itemData = null;
     let currentItemId = null;
     let currentSearchTerm = null;
+    let interfaceRendered = false; // Flag para evitar duplicatas
 
     // Funções utilitárias para trabalhar com preços e números
     
@@ -37,30 +38,181 @@
         return num.toLocaleString('pt-BR');
     }
 
+    // Função melhorada para copiar apenas números para a área de transferência
+    function copyToClipboard(text, button) {
+        // Remove tudo que não é dígito (apenas números)
+        const cleanText = text.toString().replace(/[^\d]/g, '');
+        
+        console.log('Copiando texto limpo:', cleanText); // Debug
+        
+        // Tenta usar a API moderna primeiro
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(cleanText).then(() => {
+                showCopyFeedback(button);
+            }).catch(err => {
+                console.error('Erro ao copiar:', err);
+                fallbackCopyTextToClipboard(cleanText, button);
+            });
+        } else {
+            // Fallback para navegadores antigos
+            fallbackCopyTextToClipboard(cleanText, button);
+        }
+    }
+
+    // Fallback para copiar texto (método antigo mas funcional)
+    function fallbackCopyTextToClipboard(text, button) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        textArea.style.top = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        
+        try {
+            const successful = document.execCommand('copy');
+            if (successful) {
+                showCopyFeedback(button);
+            } else {
+                console.error('Falha ao copiar com execCommand');
+            }
+        } catch (err) {
+            console.error('Erro no fallback de cópia:', err);
+        }
+        
+        document.body.removeChild(textArea);
+    }
+
+    // Mostra feedback visual quando copia
+    function showCopyFeedback(button) {
+        if (!button) {
+            console.log('Botão não encontrado para feedback');
+            return;
+        }
+        
+        const originalText = button.textContent;
+        const originalBackground = button.style.background;
+        
+        button.textContent = '✅ Copiado!';
+        button.style.background = 'linear-gradient(135deg, #059669 0%, #047857 100%)';
+        button.disabled = true;
+        
+        setTimeout(() => {
+            button.textContent = originalText;
+            button.style.background = originalBackground;
+            button.disabled = false;
+        }, 2000);
+    }
+
     // Busca dados do item na página específica do item
     async function fetchItemData(itemId) {
         // Se já temos os dados desse item, retorna do cache
         if (itemId === currentItemId && itemData) return itemData;
         
         try {
+            console.log('Buscando dados do item:', itemId); // Debug
+            
             // Faz requisição para a página do item
             const response = await fetch(`https://db.ragna4th.com/item/${itemId}`);
             const html = await response.text();
             const parser = new DOMParser();
             const doc = parser.parseFromString(html, 'text/html');
             
-            // Extrai os preços dos elementos da página
+            // Extrai os dados específicos da página do item
             const priceElements = doc.querySelectorAll('.nk-iv-wg3-amount .number');
-            const prices = Array.from(priceElements).map(el => parsePrice(el.textContent));
+            const titles = doc.querySelectorAll('.nk-iv-wg3-subtitle');
+            
+            console.log('Elementos encontrados:', {
+                prices: priceElements.length,
+                titles: titles.length
+            }); // Debug
+            
+            // Mapeia os dados baseado na estrutura da página
+            let menorPrecoDisponivel = 0;
+            let menorPrecoVenda = 0;
+            let maiorPrecoVenda = 0;
+            let numeroVendas = 0;
+            let totalVendido = 0;
+            
+            // Primeiro tenta extrair pelos títulos específicos
+            titles.forEach((title, index) => {
+                const titleText = title.textContent.trim();
+                const priceElement = priceElements[index];
+                
+                console.log(`Título ${index}:`, titleText); // Debug
+                
+                if (priceElement) {
+                    const price = parsePrice(priceElement.textContent);
+                    console.log(`Preço ${index}:`, price); // Debug
+                    
+                    if (titleText.includes('Menor Preço Disponível')) {
+                        menorPrecoDisponivel = price;
+                    } else if (titleText.includes('Menor Preço de Venda')) {
+                        menorPrecoVenda = price;
+                    } else if (titleText.includes('Maior Preço de Venda')) {
+                        maiorPrecoVenda = price;
+                    } else if (titleText.includes('Número de Vendas')) {
+                        numeroVendas = price;
+                    } else if (titleText.includes('Total Vendido')) {
+                        totalVendido = price;
+                    }
+                }
+            });
+            
+            // Se não conseguiu extrair pelos títulos, tenta extrair diretamente pelos índices
+            if (menorPrecoDisponivel === 0 && priceElements.length >= 5) {
+                console.log('Tentando extração por índice...'); // Debug
+                menorPrecoDisponivel = parsePrice(priceElements[0]?.textContent) || 0;
+                menorPrecoVenda = parsePrice(priceElements[1]?.textContent) || 0;
+                maiorPrecoVenda = parsePrice(priceElements[2]?.textContent) || 0;
+                numeroVendas = parsePrice(priceElements[3]?.textContent) || 0;
+                totalVendido = parsePrice(priceElements[4]?.textContent) || 0;
+            }
+            
+            // Se ainda não conseguiu, tenta uma abordagem mais agressiva
+            if (numeroVendas === 0 || totalVendido === 0) {
+                console.log('Tentando extração agressiva...'); // Debug
+                
+                // Procura por qualquer elemento que contenha números
+                const allTextElements = doc.querySelectorAll('*');
+                const numberPattern = /(\d{1,3}(?:\.\d{3})*)/g;
+                
+                allTextElements.forEach(element => {
+                    const text = element.textContent.trim();
+                    if (text.includes('vendas') || text.includes('Vendas')) {
+                        const matches = text.match(numberPattern);
+                        if (matches && matches.length > 0) {
+                            const num = parseInt(matches[0].replace(/\./g, ''));
+                            if (num > 0 && num < 1000000) { // Número razoável de vendas
+                                numeroVendas = num;
+                                console.log('Encontrou número de vendas:', num);
+                            }
+                        }
+                    }
+                    if (text.includes('vendido') || text.includes('Vendido')) {
+                        const matches = text.match(numberPattern);
+                        if (matches && matches.length > 0) {
+                            const num = parseInt(matches[0].replace(/\./g, ''));
+                            if (num > 0) {
+                                totalVendido = num;
+                                console.log('Encontrou total vendido:', num);
+                            }
+                        }
+                    }
+                });
+            }
             
             // Organiza os dados em um objeto bonito
             itemData = {
-                menorPrecoDisponivel: prices[0] || 0,
-                menorPrecoVenda: prices[1] || 0,
-                maiorPrecoVenda: prices[2] || 0,
-                numeroVendas: parsePrice(priceElements[3]?.textContent) || 0,
-                totalVendido: parsePrice(priceElements[4]?.textContent) || 0
+                menorPrecoDisponivel,
+                menorPrecoVenda,
+                maiorPrecoVenda,
+                numeroVendas,
+                totalVendido
             };
+            
+            console.log('Dados extraídos:', itemData); // Debug
             
             currentItemId = itemId;
             return itemData;
@@ -193,7 +345,7 @@
 
     // Cria a interface bonita na página
     async function renderInterface(analise) {
-        // Remove interface anterior se existir
+        // Remove TODAS as interfaces existentes primeiro
         document.querySelectorAll('.ragna4th-analysis-container').forEach(e => e.remove());
         
         // Busca dados do item (se conseguir)
@@ -211,10 +363,23 @@
         const searchTitle = document.querySelector('.searching-for h5');
         const currentItemName = searchTitle ? searchTitle.textContent : 'Mercado Geral';
 
+        // Cria o HTML do ícone do item (se tiver ID)
+        const itemIconHtml = itemId ? `
+            <div class="item-icon-container">
+                <img src="https://www.divine-pride.net/img/items/item/kROS/${itemId}" 
+                     alt="Ícone do item ${itemId}" 
+                     class="item-icon"
+                     onerror="this.style.display='none'">
+            </div>
+        ` : '';
+
         // HTML da interface com classe de tema
         div.innerHTML = `
             <div class="ragna4th-analysis theme-${appliedTheme}">
-                <h3>🎮 Análise de Mercado - ${currentItemName}</h3>
+                <div class="analysis-header">
+                    ${itemIconHtml}
+                    <h3>🎮 Análise de Mercado - ${currentItemName}</h3>
+                </div>
                 
                 <div class="analysis-grid">
                     <!-- Card de sugestões baseadas em resistências -->
@@ -224,7 +389,7 @@
                             analise.sugestoesResist.map(preco => `
                                 <div class="price-item">
                                     <div class="price-suggestion">${formatPrice(preco)}</div>
-                                    <button class="btn-copy-individual" onclick="copyToClipboard('${preco}')">
+                                    <button class="btn-copy-individual" data-price="${preco}">
                                         📋 Copiar
                                     </button>
                                 </div>
@@ -239,7 +404,7 @@
                         <div class="price-suggestion">${formatPrice(analise.sugestaoMedia)}</div>
                         <p><small>Média ponderada: ${formatPrice(analise.media)}</small></p>
                         <div class="analysis-actions">
-                            <button class="btn-copy-price" onclick="copyToClipboard('${analise.sugestaoMedia}')">
+                            <button class="btn-copy-price" data-price="${analise.sugestaoMedia}">
                                 📋 Copiar Preço
                             </button>
                         </div>
@@ -293,31 +458,56 @@
             </div>
         `;
 
-        // Insere a interface ANTES da tabela (não no final da página)
+        // Tenta inserir a interface no local correto
+        let inserted = false;
+        
+        // Primeiro tenta inserir antes do card do mercado
         const marketCard = document.querySelector('#market-card');
-        if (marketCard) {
+        if (marketCard && marketCard.parentNode) {
             marketCard.parentNode.insertBefore(div, marketCard);
-        } else {
-            // Fallback: insere no body se não encontrar o card
+            inserted = true;
+        }
+        
+        // Se não encontrou o card, tenta inserir antes da tabela
+        if (!inserted) {
+            const marketTable = document.querySelector('#market-table');
+            if (marketTable && marketTable.parentNode) {
+                marketTable.parentNode.insertBefore(div, marketTable);
+                inserted = true;
+            }
+        }
+        
+        // Se ainda não inseriu, tenta inserir no container principal
+        if (!inserted) {
+            const mainContainer = document.querySelector('.nk-content-body');
+            if (mainContainer) {
+                mainContainer.insertBefore(div, mainContainer.firstChild);
+                inserted = true;
+            }
+        }
+        
+        // Último recurso: insere no body
+        if (!inserted) {
             document.body.appendChild(div);
         }
 
+        // Marca que a interface foi renderizada
+        interfaceRendered = true;
+
         // Adiciona função global para copiar preços
-        window.copyToClipboard = function(price) {
-            navigator.clipboard.writeText(price.toString()).then(() => {
-                // Mostra feedback visual
-                const btn = event.target;
-                const originalText = btn.textContent;
-                btn.textContent = '✅ Copiado!';
-                btn.style.background = 'linear-gradient(135deg, #059669 0%, #047857 100%)';
-                setTimeout(() => {
-                    btn.textContent = originalText;
-                    btn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
-                }, 2000);
-            }).catch(err => {
-                console.error('Deu ruim ao copiar:', err);
+        window.copyToClipboard = copyToClipboard;
+        
+        // Adiciona event listeners para os botões de cópia
+        setTimeout(() => {
+            const copyButtons = div.querySelectorAll('.btn-copy-individual, .btn-copy-price');
+            copyButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const price = this.getAttribute('data-price') || this.textContent;
+                    copyToClipboard(price, this);
+                });
             });
-        };
+        }, 100);
     }
 
     // Observa mudanças na pesquisa para atualizar a análise

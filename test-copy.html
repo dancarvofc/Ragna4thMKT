@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de Cópia - Ragna4th Market Analyzer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .test-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-button:hover {
+            background: #0056b3;
+        }
+        .copy-button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .copy-button:hover {
+            background: #218838;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        .price-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        .price-display {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 Teste de Função de Cópia</h1>
+        <p>Criado por <strong>Dan Marofa (@dancarvofc)</strong></p>
+        
+        <div class="test-section">
+            <h3>📋 Teste de Cópia de Preços</h3>
+            <p>Clique nos botões para testar a função de cópia:</p>
+            
+            <div class="price-item">
+                <div class="price-display">999.989ƶ</div>
+                <button class="copy-button" data-price="999989">📋 Copiar</button>
+            </div>
+            
+            <div class="price-item">
+                <div class="price-display">99.999ƶ</div>
+                <button class="copy-button" data-price="99999">📋 Copiar</button>
+            </div>
+            
+            <div class="price-item">
+                <div class="price-display">1.900.000ƶ</div>
+                <button class="copy-button" data-price="1900000">📋 Copiar</button>
+            </div>
+            
+            <div class="price-item">
+                <div class="price-display">1.402 vendas</div>
+                <button class="copy-button" data-price="1402">📋 Copiar</button>
+            </div>
+            
+            <div class="price-item">
+                <div class="price-display">732.563 total</div>
+                <button class="copy-button" data-price="732563">📋 Copiar</button>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3>🔧 Status dos Testes</h3>
+            <div id="test-results"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>📋 Área de Transferência</h3>
+            <p>Cole aqui para verificar se copiou corretamente:</p>
+            <textarea id="clipboard-test" rows="3" cols="50" placeholder="Cole aqui (Ctrl+V)"></textarea>
+        </div>
+
+        <div class="test-section">
+            <h3>🎯 Instruções</h3>
+            <ol>
+                <li>Clique em um botão "📋 Copiar"</li>
+                <li>Cole no campo acima (Ctrl+V)</li>
+                <li>Verifique se apenas números foram copiados</li>
+                <li>Teste todos os botões</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        // Função de cópia da extensão
+        function copyToClipboard(text, button) {
+            // Remove tudo que não é dígito (apenas números)
+            const cleanText = text.toString().replace(/[^\d]/g, '');
+            
+            console.log('Copiando texto limpo:', cleanText);
+            addTestResult(`Copiando: ${cleanText}`, 'info');
+            
+            // Tenta usar a API moderna primeiro
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(cleanText).then(() => {
+                    showCopyFeedback(button);
+                    addTestResult(`✅ Copiado com sucesso: ${cleanText}`, 'success');
+                }).catch(err => {
+                    console.error('Erro ao copiar:', err);
+                    fallbackCopyTextToClipboard(cleanText, button);
+                });
+            } else {
+                // Fallback para navegadores antigos
+                fallbackCopyTextToClipboard(cleanText, button);
+            }
+        }
+
+        // Fallback para copiar texto
+        function fallbackCopyTextToClipboard(text, button) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-999999px';
+            textArea.style.top = '-999999px';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showCopyFeedback(button);
+                    addTestResult(`✅ Copiado com fallback: ${text}`, 'success');
+                } else {
+                    addTestResult(`❌ Falha ao copiar com execCommand`, 'error');
+                }
+            } catch (err) {
+                console.error('Erro no fallback de cópia:', err);
+                addTestResult(`❌ Erro no fallback: ${err.message}`, 'error');
+            }
+            
+            document.body.removeChild(textArea);
+        }
+
+        // Mostra feedback visual quando copia
+        function showCopyFeedback(button) {
+            if (!button) {
+                addTestResult('❌ Botão não encontrado para feedback', 'error');
+                return;
+            }
+            
+            const originalText = button.textContent;
+            const originalBackground = button.style.background;
+            
+            button.textContent = '✅ Copiado!';
+            button.style.background = '#28a745';
+            button.disabled = true;
+            
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.style.background = originalBackground;
+                button.disabled = false;
+            }, 2000);
+        }
+
+        // Adiciona resultado de teste
+        function addTestResult(message, type = 'info') {
+            const resultsDiv = document.getElementById('test-results');
+            const statusDiv = document.createElement('div');
+            statusDiv.className = `status ${type}`;
+            statusDiv.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            resultsDiv.appendChild(statusDiv);
+            
+            // Limita a 10 resultados
+            while (resultsDiv.children.length > 10) {
+                resultsDiv.removeChild(resultsDiv.firstChild);
+            }
+        }
+
+        // Adiciona event listeners para os botões
+        document.addEventListener('DOMContentLoaded', function() {
+            const copyButtons = document.querySelectorAll('.copy-button');
+            copyButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const price = this.getAttribute('data-price');
+                    copyToClipboard(price, this);
+                });
+            });
+            
+            addTestResult('🚀 Página de teste carregada', 'info');
+        });
+
+        // Teste de área de transferência
+        document.getElementById('clipboard-test').addEventListener('paste', function(e) {
+            const pastedText = e.clipboardData.getData('text');
+            addTestResult(`📋 Colado: "${pastedText}"`, 'info');
+        });
+    </script>
+</body>
+</html> 

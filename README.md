@@ -1,238 +1,190 @@
 # 🎮 Ragna4th Market Analyzer
 
-Uma extensão do Chrome que analisa preços de itens no Ragna4th e sugere preços competitivos para maximizar suas vendas!
+**Analisa preços de itens no Ragna4th e sugere preços competitivos**
 
-**👨‍💻 Criado por: Dan Marofa (@dancarvofc)**  
-**🌐 GitHub: [https://github.com/dancarvofc](https://github.com/dancarvofc)**
+> 👨‍💻 Criado por: **Dan Marofa** ([@dancarvofc](https://github.com/dancarvofc))
 
 ## ✨ Funcionalidades
 
-- **🎯 Análise Automática**: Analisa automaticamente preços de itens nas páginas do Ragna4th
-- **💰 Preço Sugerido**: Calcula o preço ideal (1 zeny abaixo da concorrência)
-- **👥 Identificação de Vendedores**: Mostra os principais vendedores e seus preços
-- **📋 Copiar Preços**: Copia preços sugeridos com um clique
-- **🎨 Tema Claro Moderno**: Interface elegante com tons de cinza
-- **🔔 Notificações**: Notificações quando análises são concluídas
-- **🖱️ Menu de Contexto**: Clique direito em links para análise rápida
-- **📊 Estatísticas Detalhadas**: Histórico de vendas e dados do mercado
+### 🎯 Análise Inteligente de Preços
+- **Sugestões por Resistência**: Identifica preços com maior quantidade de itens e sugere valores competitivos
+- **Média Ponderada**: Calcula preço médio considerando a quantidade de cada item
+- **Faixa de Preços**: Mostra mínimo, máximo e total de itens disponíveis
+- **Top Vendedores**: Lista os principais vendedores e suas quantidades
+
+### 📊 Dados do Item
+- **Menor Preço Disponível**: Preço mais baixo atualmente no mercado
+- **Menor/Maior Preço de Venda**: Histórico de vendas dos últimos 30 dias
+- **Número de Vendas**: Quantidade de vendas realizadas
+- **Total Vendido**: Volume total de itens vendidos
+- **Ícone do Item**: Exibição do ícone do item baseado no ID
+
+### 🎨 Múltiplos Temas
+- **Tema Claro**: Design moderno com tons de cinza
+- **Tema Escuro**: Para quem prefere modo escuro
+- **Tema Cinza**: Intermediário entre claro e escuro
+- **Tema Kawaiidesu**: 🌸 Cores fofas e vibrantes em rosa e roxo
+- **Tema Automático**: Detecta automaticamente o tema do site
+
+### 📋 Funcionalidades de Cópia
+- **Cópia Limpa**: Copia apenas números (sem formatação)
+- **Feedback Visual**: Confirmação visual quando copia
+- **Múltiplos Botões**: Copia preços individuais ou sugestões
 
 ## 🚀 Instalação
 
-### Método 1: Instalação Manual (Recomendado)
+### Método 1: Instalação Manual
+1. Baixe ou clone este repositório
+2. Abra o Chrome e vá para `chrome://extensions/`
+3. Ative o "Modo desenvolvedor" (canto superior direito)
+4. Clique em "Carregar sem compactação"
+5. Selecione a pasta do projeto
 
-1. **📥 Baixe os arquivos**
-   - Clone ou baixe este repositório
-   - Extraia os arquivos em uma pasta
-
-2. **🌐 Abra o Chrome**
-   - Digite `chrome://extensions/` na barra de endereços
-   - Ou vá em Menu → Mais ferramentas → Extensões
-
-3. **🔧 Ative o Modo Desenvolvedor**
-   - Clique no botão "Modo do desenvolvedor" no canto superior direito
-
-4. **📦 Carregue a Extensão**
-   - Clique em "Carregar sem compactação"
-   - Selecione a pasta com os arquivos da extensão
-   - Clique em "Selecionar pasta"
-
-5. **✅ Pronto!**
-   - A extensão será instalada e aparecerá na barra de ferramentas
-
-### Método 2: Instalação via Chrome Web Store (Futuro)
-
-*Em breve disponível na Chrome Web Store*
+### Método 2: Arquivo Compactado
+1. Baixe o arquivo `.zip` da extensão
+2. Extraia o conteúdo
+3. Siga os passos 2-5 do método manual
 
 ## 📖 Como Usar
 
-### Análise de Item Individual
+### 1. Acesse o Mercado
+- Vá para [https://db.ragna4th.com/market](https://db.ragna4th.com/market)
+- A extensão será ativada automaticamente
 
-1. **🔍 Navegue para uma página de item**
-   - Ex: `https://db.ragna4th.com/item/8009`
+### 2. Pesquise um Item
+- Digite o nome do item na barra de pesquisa
+- A análise será atualizada automaticamente
 
-2. **⚡ A extensão analisará automaticamente**
-   - Aguarde alguns segundos para o carregamento
-   - A análise aparecerá no topo da página
+### 3. Analise os Preços
+- **Sugestões por Resistência**: Preços recomendados baseados na quantidade
+- **Sugestão por Média**: Preço calculado a partir da média ponderada
+- **Faixa de Preços**: Mínimo, máximo e total disponível
 
-3. **📈 Veja os resultados**
-   - Preços atuais do item
-   - Preço sugerido para venda
-   - Principais vendedores
-   - Estatísticas de mercado
+### 4. Copie Preços
+- Clique em "📋 Copiar" para copiar apenas os números
+- Use os preços copiados no jogo ou para suas análises
 
-### Análise do Mercado
+### 5. Configure o Tema
+- Clique no ícone da extensão
+- Escolha entre: Claro, Escuro, Cinza ou Automático
 
-1. **🛒 Vá para a página do mercado**
-   - `https://db.ragna4th.com/market`
+## 🔧 Configurações
 
-2. **📊 A extensão analisará todos os itens**
-   - Mostrará preços sugeridos
-   - Identificará vendedores ativos
-   - Calculará estatísticas gerais
+### Temas Disponíveis
+- **Claro**: Design limpo com fundo branco e tons de cinza
+- **Escuro**: Modo escuro para reduzir fadiga visual
+- **Cinza**: Tema intermediário com tons neutros
+- **Automático**: Detecta o tema do site automaticamente
 
-### Usando o Popup
+### Personalização
+- A interface se adapta automaticamente ao tema escolhido
+- Posicionamento inteligente na página
+- Responsivo para dispositivos móveis
 
-1. **🖱️ Clique no ícone da extensão**
-   - Na barra de ferramentas do Chrome
+## 🧪 Testes
 
-2. **🔘 Use os botões**
-   - **Analisar Página Atual**: Força uma nova análise
-   - **Abrir Mercado**: Navega para o mercado
-   - **Configurações**: Abre as configurações
+### Arquivo de Teste
+Execute o arquivo `test.html` para verificar se todas as funcionalidades estão funcionando:
 
-### Menu de Contexto
+```bash
+# Abra o arquivo test.html no navegador
+open test.html
+```
 
-1. **🖱️ Clique direito em links de itens**
-   - Selecione "Analisar Item Ragna4th"
-   - A extensão abrirá a página do item automaticamente
+### Testes Automáticos
+- ✅ Função de cópia (remove formatação)
+- ✅ Detecção de tema
+- ✅ Parsing de preços
+- ✅ Renderização da interface
 
-## 🎯 Como Funciona
+### Links de Teste
+- [Página do Mercado](https://db.ragna4th.com/market)
+- [Item Instance Stone (ID: 8030)](https://db.ragna4th.com/item/8030)
+- [Mercado do Item 8030](https://db.ragna4th.com/market?item=8030)
 
-### Cálculo do Preço Sugerido
+### 🧪 Arquivos de Teste
+- **`test-copy.html`**: Teste específico da função de cópia de preços
+- **`test-icon.html`**: Teste da exibição de ícones de itens
+- **`demo-kawaiidesu.html`**: Demonstração do tema kawaiidesu
 
-A extensão calcula o preço ideal usando a seguinte lógica:
+## 🐛 Correções Implementadas
 
-1. **🔍 Identifica o menor preço atual** no mercado
-2. **➖ Subtrai 1 zeny** para ficar abaixo da concorrência
-3. **✅ Garante que o preço seja pelo menos 1 zeny** (mínimo)
+### ✅ Problemas Resolvidos
+1. **Botão Copiar**: Agora funciona corretamente com event listeners em vez de onclick inline
+2. **Cópia Limpa**: Copia apenas números, sem formatação (ƶ, pontos, vírgulas)
+3. **Duplicatas**: Evita criação de múltiplas interfaces de análise
+4. **Dados do Item**: Busca corretamente os dados da página específica do item
+5. **Posicionamento**: Interface posicionada corretamente na página
+6. **Feedback Visual**: Confirmação visual quando copia preços
+7. **Debug**: Logs detalhados para identificar problemas
+8. **Estatísticas**: Extração melhorada de número de vendas e total vendido
+9. **Tema Kawaiidesu**: 🌸 Novo tema fofo com cores rosa e roxas
 
-### Análise de Vendedores
+### 🔄 Melhorias Adicionadas
+- **Event Listeners**: Uso de event listeners em vez de onclick inline
+- **Data Attributes**: Preços armazenados em data attributes para melhor performance
+- **Fallback Robusto**: Múltiplos métodos de cópia para compatibilidade
+- **Extração de Dados**: Método duplo para extrair dados do item (por título e por índice)
+- **Arquivo de Teste**: `test-copy.html` para testar especificamente a função de cópia
+- **Logs de Debug**: Console logs para identificar problemas de extração de dados
+- **Ícone do Item**: Exibição automática do ícone do item baseado no ID
+- **Cabeçalho Melhorado**: Layout flexível com ícone e título
 
-- **📊 Conta quantos itens** cada vendedor tem
-- **💰 Identifica o menor preço** de cada vendedor
-- **🏆 Ranking por quantidade** de itens vendidos
-- **👑 Mostra os top 5 vendedores** mais ativos
+### 🧪 Arquivos de Teste
+- **test.html**: Teste geral das funcionalidades
+- **test-copy.html**: Teste específico da função de cópia
+- **Verificação de Área de Transferência**: Campo para colar e verificar se copiou corretamente
 
-### Dados Analisados
-
-- Preço menor disponível
-- Menor preço de venda (30 dias)
-- Maior preço de venda (30 dias)
-- Número de vendas (30 dias)
-- Total vendido (30 dias)
-- Vendedores ativos e seus preços
-
-## ⚙️ Configurações
-
-### Análise Automática
-- **✅ Ativada por padrão**
-- Analisa automaticamente quando você visita páginas do Ragna4th
-- Pode ser desativada nas configurações
-
-### Notificações
-- **🔔 Ativadas por padrão**
-- Mostra notificações quando análises são concluídas
-- Pode ser desativada nas configurações
-
-### Tema
-- **🎨 Múltiplos temas disponíveis**:
-  - **Automático**: Segue o tema do site (claro/escuro)
-  - **Claro**: Tema claro com tons de cinza elegantes
-  - **Escuro**: Tema escuro para ambientes com pouca luz
-  - **Cinza**: Tema intermediário com tons de cinza
-- Interface elegante e profissional
-- Design responsivo para mobile
-
-### Configurações Avançadas
-- **💰 Margem de preço**: Ajuste a diferença em zeny
-- **👥 Limite de vendedores**: Quantos vendedores mostrar
-
-## 🎨 Design e Interface
-
-### Múltiplos Temas
-- **🎨 Tema Claro**: Tons de cinza elegantes e profissionais
-- **🌙 Tema Escuro**: Ideal para ambientes com pouca luz
-- **⚫ Tema Cinza**: Intermediário com tons neutros
-- **🔄 Automático**: Segue o tema do site automaticamente
-
-### Características Visuais
-- **💳 Cards modernos**: Interface em cards com sombras suaves
-- **🎯 Botões interativos**: Feedback visual ao clicar
-- **📊 Gráficos e estatísticas**: Dados apresentados de forma clara
-- **🎨 Ícones intuitivos**: Emojis e ícones para melhor UX
-- **📱 Responsivo**: Funciona perfeitamente em mobile
-- **🔍 Legibilidade**: Texto bem contrastado e legível
-
-## 🔧 Solução de Problemas
-
-### A extensão não aparece
-1. Verifique se está no modo desenvolvedor
-2. Recarregue a extensão
-3. Verifique se todos os arquivos estão presentes
-
-### Análise não funciona
-1. Certifique-se de estar em uma página do Ragna4th
-2. Aguarde o carregamento completo da página
-3. Tente recarregar a página (F5)
-
-### Preços não aparecem
-1. Verifique se a página carregou completamente
-2. Aguarde alguns segundos
-3. Clique em "Analisar Página Atual" no popup
-
-### Erro de permissões
-1. Verifique se a extensão tem permissão para acessar o site
-2. Recarregue a extensão
-3. Verifique o console do navegador para erros
-
-## 📁 Estrutura dos Arquivos
+## 📁 Estrutura do Projeto
 
 ```
 Ragna4thMKT/
 ├── manifest.json          # Configuração da extensão
-├── content.js             # Script principal (análise)
+├── content.js             # Script principal (análise de preços)
+├── styles.css             # Estilos e temas
 ├── popup.html             # Interface do popup
-├── popup.js               # Funcionalidade do popup
-├── background.js          # Service worker
+├── popup.js               # Lógica do popup
 ├── options.html           # Página de configurações
-├── options.js             # Script das configurações
-├── styles.css             # Estilos da interface
-├── icons/                 # Ícones da extensão
-│   ├── icon16.png
-│   ├── icon48.png
-│   └── icon128.png
-├── INSTALACAO.md          # Guia de instalação
+├── options.js             # Lógica das configurações
+├── background.js          # Script em background
+├── test.html              # Página de testes
+├── README.md              # Este arquivo
+├── INSTALACAO.md          # Instruções de instalação
 ├── EXEMPLO.md             # Exemplos de uso
-└── README.md              # Este arquivo
+└── icons/                 # Ícones da extensão
+    ├── icon16.png
+    ├── icon48.png
+    ├── icon128.png
+    └── icon.svg
 ```
 
-## 🛠️ Desenvolvimento
+## 🤝 Contribuições
 
-### Tecnologias Utilizadas
-- **JavaScript ES6+**: Lógica principal
-- **Chrome Extensions API**: Integração com o navegador
-- **CSS3**: Estilização moderna e responsiva
-- **HTML5**: Interface do popup e configurações
+Contribuições são bem-vindas! Para contribuir:
 
-### Como Contribuir
 1. Faça um fork do projeto
-2. Crie uma branch para sua feature
-3. Faça suas alterações
-4. Teste extensivamente
-5. Envie um pull request
+2. Crie uma branch para sua feature (`git checkout -b feature/nova-funcionalidade`)
+3. Commit suas mudanças (`git commit -am 'Adiciona nova funcionalidade'`)
+4. Push para a branch (`git push origin feature/nova-funcionalidade`)
+5. Abra um Pull Request
 
-## 📄 Licença
+## 📝 Licença
 
-Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
-## 🤝 Suporte
+## 👨‍💻 Autor
 
-Se você encontrar problemas ou tiver sugestões:
+**Dan Marofa** ([@dancarvofc](https://github.com/dancarvofc))
 
-1. **📝 Abra uma issue** no GitHub
-2. **📋 Descreva o problema** detalhadamente
-3. **📸 Inclua screenshots** se possível
-4. **🔢 Mencione sua versão** do Chrome
+- 🌐 GitHub: [https://github.com/dancarvofc](https://github.com/dancarvofc)
+- 🎮 Projeto: Ragna4th Market Analyzer
 
-## 🎉 Agradecimentos
+## 🙏 Agradecimentos
 
-- **🎮 Ragna4th**: Pela plataforma incrível
-- **👥 Comunidade**: Por feedback e sugestões
-- **🌐 Chrome Extensions**: Pela documentação excelente
-- **💻 GitHub**: Por hospedar o projeto
+- Comunidade Ragna4th pela inspiração
+- Contribuidores que testaram e reportaram bugs
+- Todos que usam e apoiam a extensão
 
 ---
 
-**⭐ Se este projeto te ajudou, considere dar uma estrela no GitHub!**
-
-**👨‍💻 Desenvolvido com ❤️ por Dan Marofa (@dancarvofc)** 
+**⭐ Se este projeto te ajudou, considere dar uma estrela no GitHub!** 

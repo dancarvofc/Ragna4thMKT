@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de Ícone - Ragna4th Market Analyzer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .icon-test {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        .item-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+            background: rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .item-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+        .icon-info {
+            flex: 1;
+        }
+        .icon-info h4 {
+            margin: 0 0 5px 0;
+            color: #333;
+        }
+        .icon-info p {
+            margin: 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        .test-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🖼️ Teste de Ícone do Item</h1>
+        <p>Criado por <strong>Dan Marofa (@dancarvofc)</strong></p>
+        
+        <div class="test-section">
+            <h3>📋 Teste de Ícones de Itens</h3>
+            <p>Verifique se os ícones carregam corretamente:</p>
+            
+            <div class="icon-test">
+                <img src="https://www.divine-pride.net/img/items/item/kROS/8030" 
+                     alt="Ícone do item 8030" 
+                     class="item-icon"
+                     onload="addTestResult('✅ Ícone 8030 carregado com sucesso', 'success')"
+                     onerror="addTestResult('❌ Erro ao carregar ícone 8030', 'error')">
+                <div class="icon-info">
+                    <h4>Instance Stone (ID: 8030)</h4>
+                    <p>URL: https://www.divine-pride.net/img/items/item/kROS/8030</p>
+                </div>
+            </div>
+            
+            <div class="icon-test">
+                <img src="https://www.divine-pride.net/img/items/item/kROS/500009" 
+                     alt="Ícone do item 500009" 
+                     class="item-icon"
+                     onload="addTestResult('✅ Ícone 500009 carregado com sucesso', 'success')"
+                     onerror="addTestResult('❌ Erro ao carregar ícone 500009', 'error')">
+                <div class="icon-info">
+                    <h4>Item Teste (ID: 500009)</h4>
+                    <p>URL: https://www.divine-pride.net/img/items/item/kROS/500009</p>
+                </div>
+            </div>
+            
+            <div class="icon-test">
+                <img src="https://www.divine-pride.net/img/items/item/kROS/999999" 
+                     alt="Ícone do item 999999" 
+                     class="item-icon"
+                     onload="addTestResult('✅ Ícone 999999 carregado com sucesso', 'success')"
+                     onerror="addTestResult('❌ Erro ao carregar ícone 999999 (esperado)', 'info')">
+                <div class="icon-info">
+                    <h4>Item Inexistente (ID: 999999)</h4>
+                    <p>URL: https://www.divine-pride.net/img/items/item/kROS/999999</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3>🔧 Status dos Testes</h3>
+            <div id="test-results"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>🎯 Como Funciona</h3>
+            <ol>
+                <li>A extensão extrai o ID do item da URL ou da tabela</li>
+                <li>Constrói a URL: <code>https://www.divine-pride.net/img/items/item/kROS/{ID}</code></li>
+                <li>Exibe o ícone ao lado do título da análise</li>
+                <li>Se o ícone não carregar, ele fica oculto automaticamente</li>
+                <li>O ícone tem efeitos de hover e se adapta ao tema</li>
+            </ol>
+        </div>
+
+        <div class="test-section">
+            <h3>🧪 Teste Manual</h3>
+            <p>Teste com diferentes IDs de itens:</p>
+            <input type="number" id="itemIdInput" placeholder="Digite o ID do item" style="padding: 8px; margin: 5px;">
+            <button class="test-button" onclick="testCustomIcon()">Testar Ícone</button>
+            <div id="customIconTest"></div>
+        </div>
+    </div>
+
+    <script>
+        function addTestResult(message, type = 'info') {
+            const resultsDiv = document.getElementById('test-results');
+            const statusDiv = document.createElement('div');
+            statusDiv.className = `status ${type}`;
+            statusDiv.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            resultsDiv.appendChild(statusDiv);
+            
+            // Limita a 10 resultados
+            while (resultsDiv.children.length > 10) {
+                resultsDiv.removeChild(resultsDiv.firstChild);
+            }
+        }
+
+        function testCustomIcon() {
+            const itemId = document.getElementById('itemIdInput').value;
+            if (!itemId) {
+                addTestResult('❌ Digite um ID de item válido', 'error');
+                return;
+            }
+            
+            const testDiv = document.getElementById('customIconTest');
+            testDiv.innerHTML = `
+                <div class="icon-test">
+                    <img src="https://www.divine-pride.net/img/items/item/kROS/${itemId}" 
+                         alt="Ícone do item ${itemId}" 
+                         class="item-icon"
+                         onload="addTestResult('✅ Ícone ${itemId} carregado com sucesso', 'success')"
+                         onerror="addTestResult('❌ Erro ao carregar ícone ${itemId}', 'error')">
+                    <div class="icon-info">
+                        <h4>Item Personalizado (ID: ${itemId})</h4>
+                        <p>URL: https://www.divine-pride.net/img/items/item/kROS/${itemId}</p>
+                    </div>
+                </div>
+            `;
+            
+            addTestResult(`🧪 Testando ícone do item ${itemId}`, 'info');
+        }
+
+        // Executa testes automáticos ao carregar
+        window.addEventListener('load', () => {
+            addTestResult('🚀 Página de teste carregada', 'info');
+            addTestResult('🖼️ Testando carregamento de ícones...', 'info');
+        });
+    </script>
+</body>
+</html> 

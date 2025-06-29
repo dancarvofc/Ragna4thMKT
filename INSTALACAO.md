@@ -1,67 +1,162 @@
-# 🚀 Instalação Rápida - Ragna4th Market Analyzer
+# 📦 Guia de Instalação - Ragna4th Market Analyzer
 
-## 📋 Pré-requisitos
+> 👨‍💻 Criado por: **Dan Marofa** ([@dancarvofc](https://github.com/dancarvofc))
 
-- Google Chrome (versão 88 ou superior)
-- Acesso ao site db.ragna4th.com
+## 🚀 Instalação Rápida
 
-## ⚡ Instalação em 5 Passos
+### Pré-requisitos
+- ✅ Google Chrome (versão 88 ou superior)
+- ✅ Conexão com a internet
+- ✅ Modo desenvolvedor ativado
 
-### 1. Baixe os Arquivos
-- Baixe todos os arquivos desta pasta
-- Mantenha a estrutura de pastas intacta
+### Passo a Passo
 
-### 2. Abra o Chrome
+#### 1. 📥 Baixar os Arquivos
+```bash
+# Opção 1: Clone o repositório
+git clone https://github.com/dancarvofc/Ragna4thMKT.git
+
+# Opção 2: Baixe o ZIP
+# Clique em "Code" → "Download ZIP" no GitHub
+```
+
+#### 2. 🌐 Abrir o Chrome
 - Digite `chrome://extensions/` na barra de endereços
 - Ou vá em: Menu → Mais ferramentas → Extensões
 
-### 3. Ative o Modo Desenvolvedor
-- Clique no botão "Modo do desenvolvedor" (canto superior direito)
+#### 3. 🔧 Ativar Modo Desenvolvedor
+- Clique no botão **"Modo do desenvolvedor"** (canto superior direito)
+- Aguarde a interface mudar
 
-### 4. Carregue a Extensão
-- Clique em "Carregar sem compactação"
-- Selecione a pasta com todos os arquivos
-- Clique em "Selecionar pasta"
+#### 4. 📦 Carregar Extensão
+- Clique em **"Carregar sem compactação"**
+- Selecione a pasta `Ragna4thMKT` (onde estão os arquivos)
+- Clique em **"Selecionar pasta"**
 
-### 5. Pronto! 🎉
-- A extensão aparecerá na barra de ferramentas
-- Clique no ícone para abrir o popup
+#### 5. ✅ Verificar Instalação
+- A extensão deve aparecer na lista
+- O ícone deve aparecer na barra de ferramentas
+- Status deve mostrar "Ativada"
 
-## 🎯 Primeiro Uso
+## 🧪 Teste a Instalação
 
-1. **Vá para o Ragna4th**: https://db.ragna4th.com/market
-2. **A extensão analisará automaticamente** os preços
-3. **Veja os preços sugeridos** no topo da página
-4. **Clique em "Copiar Preço"** para usar
+### 1. Abra o Arquivo de Teste
+```bash
+# Abra o arquivo test.html no navegador
+# Deve estar na pasta da extensão
+```
 
-## 🔧 Configurações
+### 2. Teste as Funcionalidades
+- ✅ Função de cópia
+- ✅ Detecção de tema
+- ✅ Parsing de preços
+- ✅ Renderização da interface
 
-- Clique no ícone da extensão
-- Clique em "Configurações"
-- Personalize conforme sua preferência
+### 3. Teste no Site Real
+- Vá para [https://db.ragna4th.com/market](https://db.ragna4th.com/market)
+- A extensão deve aparecer automaticamente
+- Teste pesquisar um item
 
-## ❓ Problemas Comuns
+## 🔧 Configuração Inicial
 
-### A extensão não aparece
-- Verifique se o modo desenvolvedor está ativo
-- Recarregue a extensão (botão de atualizar)
+### 1. Clique no Ícone
+- Clique no ícone da extensão na barra de ferramentas
 
-### Análise não funciona
-- Certifique-se de estar em db.ragna4th.com
+### 2. Escolha o Tema
+- **Claro**: Design limpo com tons de cinza
+- **Escuro**: Modo escuro
+- **Cinza**: Tema intermediário
+- **Automático**: Detecta o tema do site
+
+### 3. Teste as Funcionalidades
+- Pesquise um item no mercado
+- Verifique se a análise aparece
+- Teste copiar preços
+
+## 🐛 Solução de Problemas
+
+### ❌ Extensão não aparece
+```bash
+# Solução 1: Recarregar
+1. Vá para chrome://extensions/
+2. Clique em "Recarregar" na extensão
+3. Recarregue a página do Ragna4th
+
+# Solução 2: Reinstalar
+1. Remova a extensão
+2. Baixe novamente os arquivos
+3. Instale seguindo os passos acima
+```
+
+### ❌ Análise não funciona
+```bash
+# Verificar se está na página correta
+- URL deve ser: https://db.ragna4th.com/market*
 - Aguarde o carregamento completo da página
-- Tente recarregar a página (F5)
+- Verifique o console (F12) para erros
+```
 
-### Erro de permissões
-- Verifique se todos os arquivos estão presentes
-- Recarregue a extensão
+### ❌ Botão copiar não funciona
+```bash
+# Verificar permissões
+1. Clique direito no ícone da extensão
+2. Selecione "Gerenciar extensão"
+3. Verifique se as permissões estão corretas
+```
+
+### ❌ Tema não muda
+```bash
+# Verificar configurações
+1. Clique no ícone da extensão
+2. Escolha um tema diferente
+3. Recarregue a página
+```
+
+## 📋 Checklist de Instalação
+
+- [ ] Chrome versão 88+ instalado
+- [ ] Arquivos da extensão baixados
+- [ ] Modo desenvolvedor ativado
+- [ ] Extensão carregada sem erros
+- [ ] Ícone aparece na barra de ferramentas
+- [ ] Arquivo test.html funciona
+- [ ] Site do Ragna4th carrega
+- [ ] Análise aparece na página
+- [ ] Botão copiar funciona
+- [ ] Tema muda corretamente
+
+## 🔄 Atualizações
+
+### Como Atualizar
+```bash
+# Opção 1: Git (recomendado)
+git pull origin main
+
+# Opção 2: Manual
+1. Baixe a nova versão
+2. Substitua os arquivos antigos
+3. Recarregue a extensão
+```
+
+### Verificar Versão
+- Clique no ícone da extensão
+- A versão aparece no popup
 
 ## 📞 Suporte
 
-Se tiver problemas:
-1. Verifique o console do navegador (F12)
-2. Recarregue a extensão
-3. Tente reinstalar
+### Se precisar de ajuda:
+1. **📝 Abra uma issue** no GitHub
+2. **📋 Descreva o problema** detalhadamente
+3. **📸 Inclua screenshots** se possível
+4. **🔢 Mencione sua versão** do Chrome
+
+### Links Úteis
+- 🌐 [GitHub do Projeto](https://github.com/dancarvofc/Ragna4thMKT)
+- 🧪 [Página de Teste](test.html)
+- 🎮 [Site do Ragna4th](https://db.ragna4th.com)
 
 ---
 
-**Desenvolvido com ❤️ para a comunidade Ragna4th** 
+**🎉 Parabéns! Sua extensão está instalada e pronta para usar!**
+
+**👨‍💻 Desenvolvido com ❤️ por Dan Marofa (@dancarvofc)** 
